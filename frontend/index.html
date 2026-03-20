@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sales Forecasting Dashboard — Interactive business intelligence tool using machine learning.">
+    <title>Sales Forecast | AI-Powered Business Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ═══════════ SIDEBAR ═══════════ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <span class="brand-text">ForecastAI</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="overview">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+                <span>Overview</span>
+            </a>
+            <a href="#" class="nav-item" data-page="forecast">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>Forecast</span>
+            </a>
+            <a href="#" class="nav-item" data-page="breakdown">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                <span>Breakdown</span>
+            </a>
+            <a href="#" class="nav-item" data-page="seasonality">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Seasonality</span>
+            </a>
+            <a href="#" class="nav-item" data-page="model">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Model</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="footer-badge">ML Powered</div>
+        </div>
+    </aside>
+
+    <!-- ═══════════ MAIN CONTENT ═══════════ -->
+    <main class="main-content">
+        <!-- HEADER -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div>
+                    <h1 class="header-title" id="pageTitle">Business Overview</h1>
+                    <p class="header-subtitle" id="pageSubtitle">Key performance indicators at a glance</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-pill" id="statusPill">
+                    <span class="status-dot"></span>
+                    <span>Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- LOADING OVERLAY -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loader">
+                <div class="loader-ring"></div>
+                <p>Loading data &amp; training model...</p>
+            </div>
+        </div>
+
+        <!-- ═══ PAGE: OVERVIEW ═══ -->
+        <section class="page active" id="page-overview">
+            <div class="kpi-grid" id="kpiGrid">
+                <div class="kpi-card kpi-sales">
+                    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                    <div class="kpi-content"><span class="kpi-label">Total Sales</span><span class="kpi-value" id="kpiSales">—</span></div>
+                </div>
+                <div class="kpi-card kpi-profit">
+                    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+                    <div class="kpi-content"><span class="kpi-label">Total Profit</span><span class="kpi-value" id="kpiProfit">—</span></div>
+                </div>
+                <div class="kpi-card kpi-orders">
+                    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div>
+                    <div class="kpi-content"><span class="kpi-label">Total Orders</span><span class="kpi-value" id="kpiOrders">—</span></div>
+                </div>
+                <div class="kpi-card kpi-aov">
+                    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div>
+                    <div class="kpi-content"><span class="kpi-label">Avg Order Value</span><span class="kpi-value" id="kpiAOV">—</span></div>
+                </div>
+                <div class="kpi-card kpi-margin">
+                    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg></div>
+                    <div class="kpi-content"><span class="kpi-label">Profit Margin</span><span class="kpi-value" id="kpiMargin">—</span></div>
+                </div>
+                <div class="kpi-card kpi-quantity">
+                    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg></div>
+                    <div class="kpi-content"><span class="kpi-label">Items Sold</span><span class="kpi-value" id="kpiQuantity">—</span></div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header"><h3>Year-over-Year Sales Growth</h3></div>
+                <div class="chart-wrapper"><canvas id="yoyChart"></canvas></div>
+            </div>
+        </section>
+
+        <!-- ═══ PAGE: FORECAST ═══ -->
+        <section class="page" id="page-forecast">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Monthly Sales — Historical &amp; Predicted</h3>
+                    <div class="chart-legend-custom">
+                        <span class="legend-item"><span class="legend-dot legend-historical"></span> Historical</span>
+                        <span class="legend-item"><span class="legend-dot legend-forecast"></span> Forecast</span>
+                    </div>
+                </div>
+                <div class="chart-wrapper chart-wrapper-xl"><canvas id="forecastChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header"><h3>Forecast Details</h3></div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="forecastTable">
+                        <thead><tr><th>Month</th><th>Predicted Sales</th><th>Trend</th></tr></thead>
+                        <tbody id="forecastTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ PAGE: BREAKDOWN ═══ -->
+        <section class="page" id="page-breakdown">
+            <div class="chart-grid">
+                <div class="chart-card"><div class="chart-header"><h3>By Category</h3></div><div class="chart-wrapper"><canvas id="categoryChart"></canvas></div></div>
+                <div class="chart-card"><div class="chart-header"><h3>By Region</h3></div><div class="chart-wrapper"><canvas id="regionChart"></canvas></div></div>
+                <div class="chart-card"><div class="chart-header"><h3>By Segment</h3></div><div class="chart-wrapper"><canvas id="segmentChart"></canvas></div></div>
+                <div class="chart-card"><div class="chart-header"><h3>Top Sub-Categories</h3></div><div class="chart-wrapper"><canvas id="subCategoryChart"></canvas></div></div>
+            </div>
+        </section>
+
+        <!-- ═══ PAGE: SEASONALITY ═══ -->
+        <section class="page" id="page-seasonality">
+            <div class="chart-card">
+                <div class="chart-header"><h3>Monthly Sales Pattern (Avg Across All Years)</h3></div>
+                <div class="chart-wrapper chart-wrapper-xl"><canvas id="seasonalityChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header"><h3>Yearly Monthly Comparison</h3></div>
+                <div class="chart-wrapper chart-wrapper-xl"><canvas id="yearlyMonthlyChart"></canvas></div>
+            </div>
+        </section>
+
+        <!-- ═══ PAGE: MODEL ═══ -->
+        <section class="page" id="page-model">
+            <div class="model-info-card" id="modelInfoCard">
+                <div class="model-info-header">
+                    <div class="model-badge">Linear Regression</div>
+                    <span class="model-info-sub">Simple, interpretable forecasting model</span>
+                </div>
+                <div class="model-stats" id="modelStats"></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header"><h3>Actual vs Predicted (Test Set)</h3></div>
+                <div class="chart-wrapper chart-wrapper-xl"><canvas id="actualVsPredChart"></canvas></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
